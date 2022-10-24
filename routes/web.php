@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PublishedNoteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('{guid}', [PublishedNoteController::class, 'view']);

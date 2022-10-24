@@ -1,0 +1,30 @@
+{
+  "noteplan.minAppVersion": "3.0.21",
+  "macOS.minVersion": "10.15.7",
+  "iOS.minVersion": "14",
+  "plugin.id": "asktru.nponline",
+  "plugin.name": "NotePlan Online (Publish v2)",
+  "plugin.description": "Improved version of NotePlan Publish core feature.", 
+  "plugin.author": "Anton Skliar",
+  "plugin.url": "https://noteplan.online",
+  "plugin.version": "0.0.1", 
+  "plugin.dependencies": [ ], 
+  "plugin.script": "script.js",
+  "plugin.commands": [ 
+    {
+      "name": "publish", 
+      "alias": ["pub"],
+      "description": "Publishes current note to NotePlan Online and inserts published page URL into then note", 
+      "jsFunction": "publish",
+      "arguments": [ ]
+    },
+    {
+      "name": "unpublish", 
+      "alias": ["unp"],
+      "description": "Publishes current note to NotePlan Online and inserts published page URL into then note", 
+      "jsFunction": "unpublish",
+      "arguments": [ ]
+    },
+  ],
+  "plugin.settings": []
+}

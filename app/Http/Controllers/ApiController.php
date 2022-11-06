@@ -22,7 +22,7 @@ class ApiController extends Controller
             $guid = Str::random();
             $note = new PublishedNote();
             $note->guid = $guid;
-            $note->accessKey = $accessKey;
+            $note->access_key = $accessKey;
         }
 
         $note->fill([

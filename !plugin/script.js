@@ -1,23 +1,42 @@
-function encryptForPublish(content) {
+function encryptForPublish(content, secret) {
     return content; // TODO
 }
 
 function publish() {
+    let config = DataStore.settings;
+    let secret = config.secret;
+    let accessKey = config.accessKey;
+    let linkText = config.linkText;
+
+    let guid = '';
+    let existingUrl = Editor.content.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
+    if (existingUrl) {
+        guid = existingUrl[1];
+    }
+
     fetch('https://noteplan.online/api/publish', {
         method: 'POST',
         headers: {
-            // 'Authorization': 'Bearer ',
             'Content-Type': 'application/json'
         },
-        body: {
+        body: JSON.stringify({
+            'guid': guid,
+            'accessKey': accessKey,
             'title': Editor.title,
-            'content': encryptForPublish(Editor.content)
-        }
+            'content': encryptForPublish(Editor.content, secret)
+        })
     })
     .then(function(response) {
-        let url = response.url;
-        let firstLineEnd = Editor.content.indexOf('\n');
-        Editor.insertTextAtCharacterIndex(url, firstLineEnd + 1);
+        let url = JSON.parse(response).url;
+        console.log('done: ' + url);
+
+        if (!existingUrl) {
+            let noteContent = Editor.content;
+            let linkLine = linkText + '(' + url + ')\n';
+            let firstLineEnd = noteContent.indexOf('\n');
+            Editor.insertTextAtCharacterIndex(linkLine, firstLineEnd + 1);
+        }
+
         NotePlan.openURL(url);
     })
     .catch(function(error) {

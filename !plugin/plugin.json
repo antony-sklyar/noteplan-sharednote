@@ -3,11 +3,11 @@
   "macOS.minVersion": "10.15.7",
   "iOS.minVersion": "14",
   "plugin.id": "asktru.nponline",
-  "plugin.name": "NotePlan Online (Publish v2)",
-  "plugin.description": "Improved version of NotePlan Publish core feature.", 
+  "plugin.name": "🌐 NotePlan Online",
+  "plugin.description": "Improved version of NotePlan Publish core feature.",
   "plugin.author": "Anton Skliar",
   "plugin.url": "https://noteplan.online",
-  "plugin.version": "0.0.1", 
+  "plugin.version": "0.0.1",
   "plugin.dependencies": [ ], 
   "plugin.script": "script.js",
   "plugin.commands": [ 
@@ -26,5 +26,28 @@
       "arguments": [ ]
     },
   ],
-  "plugin.settings": []
+  "plugin.settings": [
+    {
+      "key": "secret",
+      "title": "Password for published notes",
+      "description": "Your password is used to encrypt your notes before publishing as well as to open those notes at noteplan.online",
+      "type": "string",
+      "required": false
+    },
+    {
+      "key": "accessKey",
+      "title": "Access key for updating and unpublishing notes",
+      "description": "Your secret key that is used to update or delete published notes from noteplan.online",
+      "type": "string",
+      "required": false
+    },
+    {
+      "key": "linkText",
+      "title": "Text of the link",
+      "description": "Text of the NotePlan Online link that will be inserted into the note after publishing",
+      "type": "string",
+      "required": true,
+      "default": "[NotePlan Online 🌐]"
+    }
+  ]
 }

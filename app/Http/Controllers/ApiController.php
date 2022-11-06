@@ -8,33 +8,55 @@ use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
-    public function publish(Request $request)
+    private function doEncrypt($content, $password)
     {
-        $guid = $request->input('guid');
-        $accessKey = $request->input('access_key');
+        return $content; // TODO
+    }
 
-        if ($guid) {
-            $note = PublishedNote::where([
-                        'guid' => $guid,
-                        'access_key' => $accessKey
-                    ])->firstOrFail();
-        } else {
-            $guid = Str::random();
-            $note = new PublishedNote();
-            $note->guid = $guid;
-            $note->access_key = $accessKey;
-        }
-
-        $note->fill([
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),
-        ]);
+    private function doStoreNote(Request $request, PublishedNote $note)
+    {
+        $password = $request->input('password');
+        $note->title = $this->doEncrypt($request->input('title'), $password);
+        $note->content = $this->doEncrypt($request->input('content'), $password);
+        $note->theme = $request->input('theme');
         $note->save();
+    }
 
+    private function noteResponse(PublishedNote $note)
+    {
         return response()->json(['url' => url($note->guid)]);
     }
 
-    public function unpublish(Request $request)
+    public function store(Request $request)
+    {
+        $accessKey = $request->input('access_key');
+        $password = $request->input('password');
+        $guid = Str::random();
+
+        $note = new PublishedNote();
+        $note->guid = $guid;
+        $note->access_key = $accessKey;
+        $this->doStoreNote($request, $note);
+
+        return $this->noteResponse($note);
+    }
+
+   public function update(Request $request)
+    {
+        $guid = $request->input('guid');
+        $accessKey = $request->input('access_key');
+        $password = $request->input('password');
+
+        $note = PublishedNote::where([
+                    'guid' => $guid,
+                    'access_key' => $accessKey
+                ])->firstOrFail();
+        $this->doStoreNote($request, $note);
+
+        return $this->noteResponse($note);
+    }
+
+    public function destroy(Request $request)
     {
         $guid = $request->input('guid');
         $accessKey = $request->input('access_key');

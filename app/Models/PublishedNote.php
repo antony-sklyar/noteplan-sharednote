@@ -10,6 +10,7 @@ class PublishedNote extends Model
     protected $fillable = [
         'title',
         'content',
+        'theme',
     ];
 
     protected $guarded = [

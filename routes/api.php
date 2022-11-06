@@ -4,5 +4,6 @@ use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('publish', [ApiController::class, 'publish']);
-Route::delete('publish', [ApiController::class, 'unpublish']);
+Route::post('publishedNote', [ApiController::class, 'store']);
+Route::put('publishedNote', [ApiController::class, 'update']);
+Route::delete('publishedNote', [ApiController::class, 'destroy']);

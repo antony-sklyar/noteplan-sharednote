@@ -29,7 +29,7 @@
   "plugin.settings": [
     {
       "key": "secret",
-      "title": "Password for published notes",
+      "title": "Password for published notes (32 characters long)",
       "description": "Your password is used to encrypt your notes before publishing as well as to open those notes at noteplan.online",
       "type": "string",
       "required": false

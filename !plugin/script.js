@@ -1,48 +1,107 @@
-function encryptForPublish(content, secret) {
-    return content; // TODO
+function npoPublish(title, content, accessKey)
+{
+    return fetch('https://noteplan.online/api/publishedNote', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'accessKey': accessKey,
+            'title': title,
+            'content': content
+        })
+    });
 }
 
-function publish() {
-    let config = DataStore.settings;
-    let secret = config.secret;
-    let accessKey = config.accessKey;
-
-    let guid = '';
-    let existingUrl = Editor.content.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
-    if (existingUrl) {
-        guid = existingUrl[1];
-    }
-
-    fetch('https://noteplan.online/api/publish', {
-        method: 'POST',
+function npoUpdatePublished(guid, title, content, accessKey)
+{
+    return fetch('https://noteplan.online/api/publishedNote', {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             'guid': guid,
             'accessKey': accessKey,
-            'title': Editor.title,
-            'content': encryptForPublish(Editor.content, secret)
+            'title': title,
+            'content': content
         })
-    })
-    .then(function(response) {
-        let url = JSON.parse(response).url;
-        console.log('done: ' + url);
+    });
+}
 
-        if (!existingUrl) {
-            let noteContent = Editor.content;
-            let linkLine = '[' + DataStore.settings.linkText + '](' + url + ')\n';
-            let firstLineEnd = noteContent.indexOf('\n');
-            Editor.insertTextAtCharacterIndex(linkLine, firstLineEnd + 1);
-        }
+function npoUnpublish(guid, accessKey)
+{
+    return fetch('https://noteplan.online/api/publishedNote', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'guid': guid,
+            'accessKey': accessKey
+        })
+    });
+}
 
-        NotePlan.openURL(url);
-    })
-    .catch(function(error) {
-        console.log(error);
-    })
+function npoPublishedUrlLine(url)
+{
+    return '[' + DataStore.settings.linkText + '](' + url + ')\n';
+}
+
+// ----------------------------------------------------------------------------
+
+function publish() {
+    let config = DataStore.settings;
+    let secret = config.secret;
+    let accessKey = config.accessKey;
+
+    let noteTitle = Editor.title;
+    let noteContent = Editor.content;
+
+    let guid = '';
+    let existingUrl = noteContent.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
+    if (existingUrl) {
+        guid = existingUrl[1];
+        noteContent = noteContent.replace(npoPublishedUrlLine(url), '');
+        npoUpdatePublished(guid, noteTitle, noteContent, accessKey)
+            .then(function(response) {
+                console.log('Published note has been updated.');
+                NotePlan.openURL(JSON.parse(response).url);
+            })
+            .catch(function(error) {
+                console.log('Publishing failed: ' + error);
+            });
+    } else {
+        npoPublish(noteTitle, noteContent, accessKey)
+            .then(function(response) {
+                let url = JSON.parse(response).url;
+                console.log('Note has been published: ' + url);
+                let linkLine = npoPublishedUrlLine(url);
+                let firstLineEnd = Editor.content.indexOf('\n');
+                Editor.insertTextAtCharacterIndex(linkLine, firstLineEnd + 1);
+                NotePlan.openURL(url);
+            })
+            .catch(function(error) {
+                console.log('Publishing failed: ' + error);
+            });
+    }
 }
 
 function unpublish() {
-    console.log("Hello World"); // TODO
+    let accessKey = DataStore.settings.accessKey;
+    let existingUrl = Editor.content.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
+    if (!existingUrl) {
+        console.log('No published note detected.');
+        return;
+    }
+    let guid = existingUrl[1];
+
+    npoUnpublish(guid, accessKey)
+        .then(function(response) {
+            console.log('Unpublished');
+            // TODO remove the publish URL from the note content
+        })
+        .catch(function(error) {
+            console.log('Unpublish failed: ' + error);
+        });
 }

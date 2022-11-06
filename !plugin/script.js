@@ -1,4 +1,4 @@
-function npoPublish(title, content, accessKey)
+function npoPublish(title, content, secret, accessKey)
 {
     return fetch('https://noteplan.online/api/publishedNote', {
         method: 'POST',
@@ -6,6 +6,7 @@ function npoPublish(title, content, accessKey)
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+            'password': secret,
             'accessKey': accessKey,
             'title': title,
             'content': content
@@ -13,7 +14,7 @@ function npoPublish(title, content, accessKey)
     });
 }
 
-function npoUpdatePublished(guid, title, content, accessKey)
+function npoUpdatePublished(guid, title, content, password, accessKey)
 {
     return fetch('https://noteplan.online/api/publishedNote', {
         method: 'PUT',
@@ -22,6 +23,7 @@ function npoUpdatePublished(guid, title, content, accessKey)
         },
         body: JSON.stringify({
             'guid': guid,
+            'password': secret,
             'accessKey': accessKey,
             'title': title,
             'content': content
@@ -63,7 +65,7 @@ function publish() {
     if (existingUrl) {
         guid = existingUrl[1];
         noteContent = noteContent.replace(npoPublishedUrlLine(url), '');
-        npoUpdatePublished(guid, noteTitle, noteContent, accessKey)
+        npoUpdatePublished(guid, noteTitle, noteContent, secret, accessKey)
             .then(function(response) {
                 console.log('Published note has been updated.');
                 NotePlan.openURL(JSON.parse(response).url);
@@ -72,7 +74,7 @@ function publish() {
                 console.log('Publishing failed: ' + error);
             });
     } else {
-        npoPublish(noteTitle, noteContent, accessKey)
+        npoPublish(noteTitle, noteContent, secret, accessKey)
             .then(function(response) {
                 let url = JSON.parse(response).url;
                 console.log('Note has been published: ' + url);
@@ -99,7 +101,10 @@ function unpublish() {
     npoUnpublish(guid, accessKey)
         .then(function(response) {
             console.log('Unpublished');
-            // TODO remove the publish URL from the note content
+            let noteContent = Editor.content;
+            let urlLineBegin = noteContent.indexOf('[' + DataStore.settings.linkText + ']');
+            let urlLineEnd = noteContent.indexOf('\n', urlLineBegin);
+            Editor.replaceTextInCharacterRange('', urlLineBegin, urlLineEnd - urlLineBegin);
         })
         .catch(function(error) {
             console.log('Unpublish failed: ' + error);

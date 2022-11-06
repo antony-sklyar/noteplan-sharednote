@@ -14,7 +14,7 @@ function npoPublish(title, content, secret, accessKey)
     });
 }
 
-function npoUpdatePublished(guid, title, content, password, accessKey)
+function npoUpdatePublished(guid, title, content, secret, accessKey)
 {
     return fetch('https://noteplan.online/api/publishedNote', {
         method: 'PUT',
@@ -64,6 +64,7 @@ function publish() {
     let existingUrl = noteContent.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
     if (existingUrl) {
         guid = existingUrl[1];
+        url = existingUrl[0];
         noteContent = noteContent.replace(npoPublishedUrlLine(url), '');
         npoUpdatePublished(guid, noteTitle, noteContent, secret, accessKey)
             .then(function(response) {

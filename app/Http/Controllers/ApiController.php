@@ -25,7 +25,10 @@ class ApiController extends Controller
             $note->accessKey = $accessKey;
         }
 
-        $note->fill($request->input());
+        $note->fill([
+            'title' => $request->input('title'),
+            'content' => $request->input('content'),
+        ]);
         $note->save();
 
         return response()->json(['url' => url($note->guid)]);

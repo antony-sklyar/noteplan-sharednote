@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class PublishedNote extends Model
 {
     protected $fillable = [
-        'guid',
         'title',
         'content',
+    ];
+
+    protected $guarded = [
+        'guid',
+        'access_key',
     ];
 }

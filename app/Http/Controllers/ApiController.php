@@ -10,16 +10,38 @@ class ApiController extends Controller
 {
     public function publish(Request $request)
     {
-        $note = PublishedNote::create([
-            'guid' => Str::random(),
-            'title' => $request->input('title'),
-            'content' => $request->input('content'),            
-        ]);
+        $guid = $request->input('guid');
+        $accessKey = $request->input('access_key');
+
+        if ($guid) {
+            $note = PublishedNote::where([
+                        'guid' => $guid,
+                        'access_key' => $accessKey
+                    ])->firstOrFail();
+        } else {
+            $guid = Str::random();
+            $note = new PublishedNote();
+            $note->guid = $guid;
+            $note->accessKey = $accessKey;
+        }
+
+        $note->fill($request->input());
+        $note->save();
+
         return response()->json(['url' => url($note->guid)]);
     }
 
-    public function unpublish()
+    public function unpublish(Request $request)
     {
-        return response()->noContent(); // TODO
+        $guid = $request->input('guid');
+        $accessKey = $request->input('access_key');
+
+        $note = PublishedNote::where([
+                    'guid' => $guid,
+                    'access_key' => $accessKey
+                ])->firstOrFail();
+        $note->delete();
+
+        return response()->noContent();
     }
 }

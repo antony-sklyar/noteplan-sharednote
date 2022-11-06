@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\PublishedNote;
+use Illuminate\Encryption\Encrypter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
     private function doEncrypt($content, $password)
     {
-        return $content; // TODO
+        $newEncrypter = new Encrypter($password, 'AES-256-CBC');
+        return $newEncrypter->encrypt($content);
     }
 
     private function doStoreNote(Request $request, PublishedNote $note)
     {
         $password = $request->input('password');
-        $note->title = $this->doEncrypt($request->input('title'), $password);
+        $note->title = $request->input('title');
         $note->content = $this->doEncrypt($request->input('content'), $password);
         $note->theme = $request->input('theme');
         $note->save();

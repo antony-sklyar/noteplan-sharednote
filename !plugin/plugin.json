@@ -47,7 +47,7 @@
       "description": "Text of the NotePlan Online link that will be inserted into the note after publishing",
       "type": "string",
       "required": true,
-      "default": "[NotePlan Online 🌐]"
+      "default": "NotePlan Online 🌐"
     }
   ]
 }

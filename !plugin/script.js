@@ -6,7 +6,6 @@ function publish() {
     let config = DataStore.settings;
     let secret = config.secret;
     let accessKey = config.accessKey;
-    let linkText = config.linkText;
 
     let guid = '';
     let existingUrl = Editor.content.match(/https:\/\/noteplan.online\/([0-9a-zA-Z]+)/);
@@ -32,7 +31,7 @@ function publish() {
 
         if (!existingUrl) {
             let noteContent = Editor.content;
-            let linkLine = linkText + '(' + url + ')\n';
+            let linkLine = '[' + DataStore.settings.linkText + '](' + url + ')\n';
             let firstLineEnd = noteContent.indexOf('\n');
             Editor.insertTextAtCharacterIndex(linkLine, firstLineEnd + 1);
         }

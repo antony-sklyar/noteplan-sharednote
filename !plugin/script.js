@@ -105,7 +105,7 @@ function unpublish() {
             let noteContent = Editor.content;
             let urlLineBegin = noteContent.indexOf('[' + DataStore.settings.linkText + ']');
             let urlLineEnd = noteContent.indexOf('\n', urlLineBegin);
-            Editor.replaceTextInCharacterRange('', urlLineBegin, urlLineEnd - urlLineBegin);
+            Editor.replaceTextInCharacterRange('', urlLineBegin, DataStore.settings.linkText.length + 6);
         })
         .catch(function(error) {
             console.log('Unpublish failed: ' + error);

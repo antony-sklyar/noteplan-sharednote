@@ -1,6 +1,8 @@
 <x-published title="{{ $title }}">
+    <small class="text-gray-400 text-right my-3 block">Published on {{ $updated_at }}</small>
 
-	<!-- TODO: note content should be decrypted and rendered properly -->
-    {!! Illuminate\Mail\Markdown::parse($content) !!}
+    <div class="max-w-4xl mx-auto my-7 bg-white rounded-xl shadow-lg p-6 published-note">
+        {!! Illuminate\Mail\Markdown::parse($content) !!}
+    </div>
 
 </x-published>

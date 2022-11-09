@@ -27,7 +27,10 @@ class ApiController extends Controller
 
     private function noteResponse(PublishedNote $note)
     {
-        return response()->json(['url' => url($note->guid)]);
+        return response()->json([
+            'url' => url($note->guid),
+            'guid' => $note->guid,
+        ]);
     }
 
     public function store(Request $request)

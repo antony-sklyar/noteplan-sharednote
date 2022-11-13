@@ -19,8 +19,8 @@ class PublishedNoteController extends Controller
 
     private function doPreprocessMarkdown($content)
     {
-        // fix the non-markdown-compliant NotePlan behaviour when you do not enter an empty line after a list
-        $content = preg_replace('/([\-\*]\s+[^\n]+)\n([^\-\*]+)/', "$1\n\n$2", $content);
+        // fix the non-markdown-compliant NotePlan behaviour when you do not enter an empty line after a list or a heading or anything
+        $content = preg_replace('/([\-\*#]+\s+[^\n]+)\n(\s*[^\-\*#\s]+)/', "$1\n\n$2", $content);
 
         // fix schedule dates
         $content = preg_replace('/\s+>(today|\d{4}\-\d{2}\-\d{2})\n/', " <span class='scheduled'>🗓️ $1</span>\n", $content);

@@ -19,6 +19,11 @@ class PublishedNoteController extends Controller
 
     private function doPreprocessMarkdown($content)
     {
+        $content = preg_replace('/\s+>(today|\d{4}\-\d{2}\-\d{2})\n/', " <span class='scheduled'>🗓️ $1</span>\n", $content);
+        $content = preg_replace('/\- \[ \]\s+([^\n]+)/', '<li class="task">$1</li>', $content);
+        $content = preg_replace('/\- \[x\]\s+([^\n]+)/', '<li class="task completed">$1</li>', $content);
+        $content = preg_replace('/\- \[\-\]\s+([^\n]+)/', '<li class="task canceled">$1</li>', $content);
+        $content = preg_replace('/\- \[>\]\s+([^\n]+)/', '<li class="task scheduled">$1</li>', $content);
         $content = preg_replace('/%%(([^%]%?)[^%]+)%%/', '<span style="color: gray">$1</span>', $content);
         $content = preg_replace('/::(([^:]:?)[^:]+)::/', '<mark>$1</mark>', $content);
         $content = preg_replace('/~~(([^~]~?)[^~]+)~~/', '<strike>$1</strike>', $content);

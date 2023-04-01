@@ -28,4 +28,5 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::view('sample', 'noteplan-styles');
 Route::get('{guid}', [PublishedNoteController::class, 'view']);

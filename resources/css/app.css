@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.published-note h1 {
+	margin-top: 1rem;
+	font-weight: 800;
+	font-size: 2rem;
+}
+
+.published-note h2 {
+	margin-top: 1rem;
+	font-weight: 800;
+	font-size: 1.75rem;
+}
+
+.published-note h3 {
+	margin-top: 1rem;
+	font-weight: 800;
+	font-size: 1.5rem;
+}
+
+.published-note h4 {
+	margin-top: 1rem;
+	font-weight: 800;
+	font-size: 1.25rem;
+}
+
+.published-note ul {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.published-note ul li {
+	margin-left: 2rem;
+}
+
+.published-note ul li::before {
+	content: "\2022";
+	color: #ED8936;
+	font-weight: bold;
+	display: inline-block;
+	width: 1em;
+	margin-left: -1em;
+}
+
+.published-note ol li {
+	counter-increment: li;
+	margin-left: 2rem;
+}
+
+.published-note ol li::before {
+	content: "." counter(li);
+  	color: #ED8936;
+  	font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1.5em;
+    margin-right: 0.5em;
+    text-align: right;
+    direction: rtl
+}
+
+.published-note li.task {
+	margin-left: 1.5rem;
+	display: flex;
+	align-items: center;
+}
+
+.published-note li.task span.scheduled {
+	color: #aaa;
+	display: inline-block;
+	margin-left: 0.8rem;
+}
+
+.published-note li.task::before {
+	content: " ";
+	font-size: 0.5rem;
+	display: inline-block;
+	width: 0.9rem;
+	height: 0.9rem;
+	text-align: center;
+	border: 2px solid #ED8936;
+	border-radius: 50%;
+	position: relative;
+	left: -0.5rem;
+}
+
+.published-note li.task.completed::before {
+	content: "✓";
+	color: #81A188;
+	border-color: #81A188;
+}
+
+.published-note li.task.completed {
+	color: #81A188;
+}
+
+.published-note li.task.canceled::before {
+	content: "✕";
+	color: #CFD0FF;
+	border-color: #CFD0FF;
+	line-height: 11px;
+}
+
+.published-note li.task.canceled {
+	color: #CFD0FF;
+}
+
+.published-note hr {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.published-note code, .published-note pre {
+	background: #ddd;
+	border-radius: 3px;
+	padding: 0 3px;
+	font-size: 0.8rem;
+}
+
+.published-note pre {
+	margin: 0.5rem 0;
+}
+
+.published-note blockquote {
+	padding: 0.5rem 1rem;
+	margin: 0.5rem 0;
+	border-left: solid 1px blue;
+}

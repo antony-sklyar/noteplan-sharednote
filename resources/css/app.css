@@ -162,12 +162,13 @@
 
 /* TABLES */
 .published-note table {
-    margin: 8px 0;
+    margin: 16px 0;
+    min-width: 100%;
 }
 
 .published-note table th {
     border-width: 1px;
-    padding: 2px 8px;
+    padding: 4px 8px;
     background-color: #fafafa;
     text-align: left;
     color: #888;
@@ -175,5 +176,5 @@
 
 .published-note table td {
     border-width: 1px;
-    padding: 2px 8px;
+    padding: 4px 8px;
 }

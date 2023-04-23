@@ -1,32 +1,32 @@
 <?php
 
-use App\Http\Controllers\PublishedNoteController;
+use App\Http\Controllers\NoteViewController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+/** default welcome page */
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
+/** default user dashboard */
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return Inertia::render('Dashboard');
     })->name('dashboard');
 });
 
-Route::view('sample', 'noteplan-styles');
-Route::get('{guid}', [PublishedNoteController::class, 'view']);
+/** NotePlan published notes */
+Route::get('/n/{note}', [NoteViewController::class, 'promptPassword'])->name('note-prompt');
+Route::post('/n/{note}', [NoteViewController::class, 'sendPassword'])->name('note-password');
+Route::get('/n/{note}/{password}', [NoteViewController::class, 'viewWithPassword'])->name('note-view');

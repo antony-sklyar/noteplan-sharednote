@@ -2,57 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-.published-note h1 {
-	margin-top: 1rem;
-	font-weight: 800;
-	font-size: 2rem;
+[x-cloak] {
+    display: none;
 }
 
-.published-note h2 {
-	margin-top: 1rem;
-	font-weight: 800;
-	font-size: 1.75rem;
+/* INLINE COMMENTS */
+.published-note .inline-comment {
+    color: lightgray;
 }
 
-.published-note h3 {
-	margin-top: 1rem;
-	font-weight: 800;
-	font-size: 1.5rem;
+.published-note .inline-comment .inline-comment-content {
+    color: gray;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
 
-.published-note h4 {
-	margin-top: 1rem;
-	font-weight: 800;
-	font-size: 1.25rem;
+.published-note .inline-comment:hover .inline-comment-content {
+    display: inline;
+    opacity: 1;
 }
 
+.published-note .inline-comment::before {
+    content: "%";
+    color: dark-gray;
+}
+
+.published-note .inline-comment::after {
+    content: "%";
+    color: dark-gray;
+}
+
+
+/* LISTS */
 .published-note ul {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .published-note ul li {
-	margin-left: 2rem;
+    margin-left: 2rem;
 }
 
 .published-note ul li::before {
-	content: "\2022";
-	color: #ED8936;
-	font-weight: bold;
-	display: inline-block;
-	width: 1em;
-	margin-left: -1em;
+    content: "\2022";
+    color: #ED8936;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
 }
 
 .published-note ol li {
-	counter-increment: li;
-	margin-left: 2rem;
+    counter-increment: li;
+    margin-left: 2rem;
 }
 
 .published-note ol li::before {
-	content: "." counter(li);
-  	color: #ED8936;
-  	font-weight: bold;
+    content: "." counter(li);
+      color: #ED8936;
+      font-weight: bold;
     display: inline-block;
     width: 1em;
     margin-left: -1.5em;
@@ -61,70 +70,110 @@
     direction: rtl
 }
 
-.published-note li.task {
-	margin-left: 1.5rem;
-	display: flex;
-	align-items: center;
-}
 
+/* TASKS */
 .published-note li.task span.scheduled {
-	color: #aaa;
-	display: inline-block;
-	margin-left: 0.8rem;
+    color: #aaa;
+    display: inline-block;
+    margin-left: 0.8rem;
 }
 
 .published-note li.task::before {
-	content: " ";
-	font-size: 0.5rem;
-	display: inline-block;
-	width: 0.9rem;
-	height: 0.9rem;
-	text-align: center;
-	border: 2px solid #ED8936;
-	border-radius: 50%;
-	position: relative;
-	left: -0.5rem;
+    content: none;
+}
+.published-note li.task {
+    list-style-image: none;
+    list-style-type: none;
+    background: url('/icons/circle.png') no-repeat 0 4px;
+    background-size: 16px 16px;
+    padding-left: 25px;
+    margin-left: 8px;
 }
 
-.published-note li.task.completed::before {
-	content: "✓";
-	color: #81A188;
-	border-color: #81A188;
+.published-note li.task.level1 {
+    margin-left: 32px;
+}
+.published-note li.task.level2 {
+    margin-left: 56px;
+}
+.published-note li.task.level3 {
+    margin-left: 80px;
+}
+.published-note li.task.level4 {
+    margin-left: 104px;
+}
+.published-note li.task.level5 {
+    margin-left: 128px;
+}
+.published-note li.task.level6 {
+    margin-left: 152px;
+}
+.published-note li.task.level7 {
+    margin-left: 176px;
 }
 
 .published-note li.task.completed {
-	color: #81A188;
-}
-
-.published-note li.task.canceled::before {
-	content: "✕";
-	color: #CFD0FF;
-	border-color: #CFD0FF;
-	line-height: 11px;
+    background-image: url('/icons/check-circle.png');
+    color: #81A188;
 }
 
 .published-note li.task.canceled {
-	color: #CFD0FF;
+    background-image: url('/icons/x-circle.png');
+    color: #CFD0FF;
 }
 
-.published-note hr {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+.published-note li.task.checklist {
+    background-image: url('/icons/square.png');
+}
+.published-note li.task.checklist.completed {
+    background-image: url('/icons/check-square.png');
+}
+.published-note li.task.checklist.canceled {
+    background-image: url('/icons/x-square.png');
 }
 
-.published-note code, .published-note pre {
-	background: #ddd;
-	border-radius: 3px;
-	padding: 0 3px;
-	font-size: 0.8rem;
+
+/* QUOTES */
+.published-note .quote0 {
+    margin-left: 14px;
+}
+.published-note .quote1 {
+    margin-left: 38px;
+}
+.published-note .quote2 {
+    margin-left: 62px;
+}
+.published-note .quote3 {
+    margin-left: 86px;
+}
+.published-note .quote4 {
+    margin-left: 110px;
+}
+.published-note .quote5 {
+    margin-left: 134px;
+}
+.published-note .quote6 {
+    margin-left: 158px;
+}
+.published-note .quote7 {
+    margin-left: 182px;
 }
 
-.published-note pre {
-	margin: 0.5rem 0;
+
+/* TABLES */
+.published-note table {
+    margin: 8px 0;
 }
 
-.published-note blockquote {
-	padding: 0.5rem 1rem;
-	margin: 0.5rem 0;
-	border-left: solid 1px blue;
+.published-note table th {
+    border-width: 1px;
+    padding: 2px 8px;
+    background-color: #fafafa;
+    text-align: left;
+    color: #888;
+}
+
+.published-note table td {
+    border-width: 1px;
+    padding: 2px 8px;
 }

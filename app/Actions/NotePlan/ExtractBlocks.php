@@ -23,17 +23,24 @@ class ExtractBlocks
                 $blocks[] = ['type' => 'table', 'content' => $table];
             }
             elseif (Str::startsWith($line, '```')) {
-                $codeBlock = '';
+                $codeBlock = $line;
                 while (++$i < count($lines) && !Str::startsWith($lines[$i], '```')) {
                     $codeBlock .= "\n" . $lines[$i];
                 }
-                $codeBlock = substr($codeBlock, 1);
-                $blocks[] = ['type' => 'codeblock', 'content' => $codeBlock];
+                $blocks[] = ['type' => 'codeblock', 'content' => $codeBlock . "\n```"];
             }
             else {
                 $trimmed = trim($line);
 
-                if (preg_match('/^\*( \[( |>|x|\-)\])? /', $trimmed)) {
+                if (preg_match('/^\d+(\.|\)) /', $trimmed)) {
+                    $type = 'ol';
+                    $list = $line;
+                    while (++$i < count($lines) && preg_match('/^\s*\d+(\.|\)) /', $lines[$i])) {
+                        $list .= "\n" . $lines[$i];
+                    }
+                    $line = $list;
+                }
+                elseif (preg_match('/^\*( \[( |>|x|\-)\])? /', $trimmed)) {
                     $type = 'task';
                 }
                 elseif (preg_match('/^\+( \[( |>|x|\-)\])? /', $trimmed)) {
@@ -44,9 +51,6 @@ class ExtractBlocks
                 }
                 elseif (Str::startsWith($trimmed, '- ')) {
                     $type = 'ul';
-                }
-                elseif (preg_match('/^\d+(\.|\)) /', $trimmed)) {
-                    $type = 'ol';
                 }
                 elseif (preg_match('/^#+ /', $trimmed)) {
                     $type = 'h';

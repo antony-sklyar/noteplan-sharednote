@@ -33,7 +33,7 @@ defineProps({
         </div>
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            <div v-html="html" class="max-w-4xl mx-auto my-7 bg-white dark:bg-gray-800 dark:text-white rounded-xl shadow-lg p-6 pt-3 published-note"></div>
+            <div v-html="html" class="max-w-4xl mx-auto my-7 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 dark:text-white rounded-xl shadow-2xl dark:shadow-none p-6 pt-3 published-note"></div>
 
             <div class="flex justify-center mt-16 px-6 sm:items-center sm:justify-between">
                 <div class="text-center text-sm text-gray-500 dark:text-gray-400 sm:text-left">

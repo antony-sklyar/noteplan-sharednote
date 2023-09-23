@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Actions\NotePlan\ExtractBlocks;
-use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\TestCase;
 
 class ExtractBlocksTest extends TestCase
